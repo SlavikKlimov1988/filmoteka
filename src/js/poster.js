@@ -2,7 +2,7 @@
 import NewsApiService from './api-service';
 import getRefs from './getRefs';
 
-// import listOfCards from '../templates/poster.hbs';===============
+import listOfCards from '../templates/poster.hbs';
 
 // =========================================================
 
@@ -11,6 +11,7 @@ const refs = getRefs();
 // const data = newsApiService.fetchSerchQuery();
 // console.log(data);
 // refs.form.addEventListener('submit', onFormSubmit);
+// ===============================================================
 async function onSerchQuery() {
     
     try {
@@ -34,7 +35,7 @@ async function onSerchQuery() {
 }
 
 // onSerchQuery();
-
+// ==============================================================
 async function onTrend() {
     
     try {
@@ -55,12 +56,43 @@ async function onTrend() {
       }          
 }
 
-function getRenderQuery(item,releaseYear) {
-//  const releaseYear = item[0].release_date
-  console.log(releaseYear);
 
-    // refs.galleryBox.insertAdjacentHTML('beforeend',listOfCards(item,releaseYear));=============
+
+
+// окремо отримуємо запит  масив жанри {name,id}  genres: [{id: 28, name: "Action"}, ...]
+async function getGenresById() {
+    
+    try {
+        newsApiService.resetPage();
+   
+        const data = await newsApiService.fetchGenres();
+       
+      const genres = data.data.genres;
+        
+    
+        console.log('жанри:',genres);
+          
+      } catch (error) {
+          
+        console.dir(error)
+      }          
+}
+
+getGenresById();
+
+function getRenderQuery(item,releaseYear) {
+
+    console.log(releaseYear);
+   
+    refs.ul.insertAdjacentHTML('beforeend',listOfCards(item,releaseYear));
   
 }
 
 onTrend();
+
+
+
+// const handleListClick = (event) => {
+//     console.log(event.currentTarget);
+// };
+// refs.ul.addEventListener('click', handleListClick);

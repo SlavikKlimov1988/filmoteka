@@ -11,15 +11,14 @@ const KEY = `476dab1d501621899284a1a134c160d7`;
 export default class NewsApiService {
 
     constructor() {
-        this.searchQuery = 'wood';
+        this.searchQuery = 'land';
         this.page = 1;
      }
  
     async fetchTrend() {
-        const url = `${BASE_URL}/trending/movie/week?api_key=${KEY}&page=${this.page}`
-
-      const response = await axios.get(url);
-        const data = response;
+        const url = `${BASE_URL}/trending/movie/day?api_key=${KEY}&page=${this.page}`
+ 
+        const data = await axios.get(url);
       
         
         return data;
@@ -27,6 +26,10 @@ export default class NewsApiService {
 
     // incrementPage() {
     //     this.page += 1;
+    // };
+  
+   // choosePage() {
+    //     this.page += 5;
     // };
 
     resetPage() {
@@ -36,11 +39,26 @@ export default class NewsApiService {
    async fetchSerchQuery() {
         const url = `${BASE_URL}/search/movie?api_key=${KEY}&query=${this.searchQuery}`
 
-      const response = await axios.get(url);
-        const data = response;
+        const data = await axios.get(url);
              
         return data;
-    };
+  };
+  
+  async fetchMovieById() {
+        const url = `${BASE_URL}/genre/movie/list?api_key=${KEY}&query=${this.searchQuery}`
+
+        const data = await axios.get(url);
+             
+        return data;
+  };
+
+  async fetchGenres() {
+        const url = `${BASE_URL}/genre/movie/list?api_key=${KEY}&query=${this.searchQuery}`
+
+        const data = await axios.get(url);
+             
+        return data;
+  };
   
   get query() {
         return this.searchQuery;
