@@ -8,8 +8,8 @@ import listOfCards from '../templates/poster.hbs';
 
 const newsApiService = new NewsApiService();
 const refs = getRefs();
-// const data = newsApiService.fetchSerchQuery();
-// console.log(data);
+
+
 // refs.form.addEventListener('submit', onFormSubmit);
 // ===============================================================
 async function onSerchQuery() {
@@ -39,7 +39,7 @@ async function onSerchQuery() {
 async function onTrend() {
     
     try {
-        // newsApiService.searchQuery = refs.input.value;
+        
         newsApiService.resetPage();
    
         const data = await newsApiService.fetchTrend();
@@ -79,6 +79,26 @@ async function getGenresById() {
 }
 
 getGenresById();
+
+async function getMovieById() {
+    
+    try {
+        newsApiService.resetPage();
+   
+        const data = await newsApiService.fetchMovieById();
+       
+      const objectMovie = data.data;
+        
+    
+        console.log('Обєкт фільм:', objectMovie);
+        console.log( 'belongs_to_collection', objectMovie.belongs_to_collection) 
+      } catch (error) {
+          
+        console.dir(error)
+      }          
+}
+
+getMovieById();
 
 function getRenderQuery(item,releaseYear) {
 
