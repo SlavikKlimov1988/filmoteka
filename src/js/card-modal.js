@@ -1,6 +1,6 @@
 
 const KEY = `476dab1d501621899284a1a134c160d7`;
-
+export let fetcData = null;
 let posterUrl = ``;
 const refs = {
    btnClose: document.querySelector('[data-button_close]'),
@@ -12,7 +12,7 @@ const refs = {
     ulEl: document.querySelector('.films-collection'),
 }
 
-// let obj = {};
+
 function fetchApi(movieId) {
     return fetch(`https://api.themoviedb.org/3/movie/${movieId}?api_key=${KEY}`)
     .then (response => {
@@ -38,22 +38,28 @@ function onModalOpen (event) {
     fetchRenderCard(movieId);
     refs.btnClose.addEventListener('click', onModalClose);
 
-    document.addEventListener('keydown', function (e) {
-        if(e.keyCode === 27) {
-            onModalClose();
-        };
-      }); 
+    document.addEventListener('keydown', onEscClick); 
 
-    refs.backdrop.addEventListener('click', (e) => 
-     {if (!e.target.closest('.modal')) {
-        onModalClose();
-     }})
+    refs.backdrop.addEventListener('click', onBackdropClick)
     
 };
 
+function onEscClick(e) {
+   if(e.keyCode === 27) {
+            onModalClose();
+        };
+    
+};
+
+function onBackdropClick(e) {
+    {if (!e.target.closest('.modal')) {
+       onModalClose();
+    }}
+}
+
 async function fetchRenderCard(movieId) {
    try {
-    const fetcData = await fetchApi(movieId);
+    fetcData = await fetchApi(movieId);
     renderCard(fetcData)
    }
 
@@ -71,7 +77,7 @@ function getPosterUrl(poster_path) {
 
 function renderCard({popularity, genres, poster_path, vote_average, vote_count, title, overview}) {
     getPosterUrl(poster_path);
-    // obj.title = title;
+    
     const card = `
       
     <img src="${posterUrl}" alt="descr">
@@ -88,13 +94,15 @@ function renderCard({popularity, genres, poster_path, vote_average, vote_count, 
     </div>`;
     
         // ДОбавить проверку на колличество жанров
-    refs.cardEl.insertAdjacentHTML("beforeend", card);
+    refs.cardEl.innerHTML = card;
     // console.log(obj)
 };
 
 function onModalClose() {
     refs.backdrop.classList.add("is-hidden");   
-    refs.cardEl.innerHTML ='';
+    refs.btnClose.removeEventListener('click', onModalClose);
+    refs.backdrop.removeEventListener('click', onBackdropClick);
+    document.removeEventListener('keydown', onEscClick); 
 };
 
 
